@@ -1,0 +1,24 @@
+App\Api\Catalogue\Domain\Entity\Denomination:
+  shortname: 'Denomination'
+  description: 'Denomination Endpoints'
+  itemOperations: []
+  collectionOperations:
+    list_origins:
+      method: 'GET'
+      description: 'Get Denomination List'
+      path: '/denomination/list'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ListDenominationController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get Denomination List'
+        description: 'Get info of denominations registered'
+        responses:
+          '200':
+            description: 'Denomination list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'

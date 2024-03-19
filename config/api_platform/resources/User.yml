@@ -1,0 +1,224 @@
+App\Api\Auth\Domain\Entity\User\User:
+  shortname: 'User'
+  description: 'Information about Entity User'
+  itemOperations: []
+  collectionOperations:
+    register_user:
+      method: 'POST'
+      description: 'Register user'
+      path: '/users/register'
+      controller: 'App\Api\Auth\Infrastructure\Controller\RegisterUserController'
+      deserialize: false
+      openapi_context:
+        summary: 'Register user in the platform'
+        description: 'Save User in DB and send him an activation email.'
+        requestBody:
+          description: 'Save User in the platform'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                  surname:
+                    type: 'string'
+                  gender:
+                    type: 'string'
+                  email:
+                    type: 'string'
+                    format: 'email'
+                  phone:
+                    type: 'number'
+                  residence:
+                    type: 'string'
+                  cp:
+                    type: 'string'
+                  country:
+                    type: 'string'
+                  city:
+                    type: 'string'
+                  password:
+                    type: 'string'
+                  birthdate:
+                    type: 'string'
+                    format: 'date'
+        responses:
+          '201':
+            description: 'User activated'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '400':
+            description: 'Bad Request'
+    active_user:
+      method: 'POST'
+      description: 'Active user'
+      path: '/users/activate'
+      controller: 'App\Api\Auth\Infrastructure\Controller\ActivateUserController'
+      deserialize: false
+      openapi_context:
+        summary: 'Active user'
+        description: 'This endpoint allows you to activate a user.'
+        requestBody:
+          description: 'Use uid and token for active one user'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  uid:
+                    type: 'string'
+                  token:
+                    type: 'string'
+        responses:
+          '201':
+            description: 'User activated'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '400':
+            description: 'Bad Request'
+    resend_activation_email:
+      method: 'POST'
+      path: '/users/restore/token'
+      controller: 'App\Api\Auth\Infrastructure\Controller\RestoreUserTokenController'
+      deserialize: false
+      openapi_context:
+        summary: 'Resend activation email'
+        description: 'This endpoint allows you to resend an email for activating user account.'
+        requestBody:
+          description: 'Resend activation email after registration'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  email:
+                    type: 'string'
+                    format: 'email'
+        responses:
+          '201':
+            description: 'Token restored'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '400':
+            description: 'Bad Request'
+    user_login:
+      method: 'POST'
+      path: '/users/login'
+      controller: 'App\Api\Auth\Infrastructure\Controller\LoginUserController'
+      deserialize: false
+      openapi_context:
+        summary: 'Logging User'
+        description: 'Generates a JWT for logging the platform'
+        requestBody:
+          description: 'Check credentials and generate JWT'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  email:
+                    type: 'string'
+                    format: 'email'
+                  password:
+                    type: 'string'
+        responses:
+          '201':
+            description: 'JWT generated successfully'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    token:
+                      type: 'string'
+          '400':
+            description: 'Bad Request'
+    request_reset_password:
+      method: 'POST'
+      path: '/users/request/reset/password'
+      controller: 'App\Api\Auth\Infrastructure\Controller\ResetUserPasswordRequestController'
+      deserialize: false
+      openapi_context:
+        summary: 'Request reset user password'
+        description: 'This endpoint allows the user to receive email to reset their password.'
+        requestBody:
+          description: 'The email of the user to send reset password link.'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  email:
+                    type: 'string'
+                    format: 'email'
+        responses:
+          '201':
+            description: 'Reset password request processed successfully'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '400':
+            description: 'Bad request'
+    reset_password:
+      method: 'POST'
+      path: '/users/reset/password'
+      controller: 'App\Api\Auth\Infrastructure\Controller\ResetUserPassword'
+      deserialize: false
+      openapi_context:
+        summary: 'Reset user password'
+        description: 'This endpoint allows the user to reset their password.'
+        requestBody:
+          description: 'The User password is changed'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  uid:
+                    type: 'string'
+                  token:
+                    type: 'string'
+                  password:
+                    type: 'string'
+        responses:
+          '201':
+            description: 'Password change successfully'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '400':
+            description: 'Bad request'

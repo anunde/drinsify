@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Api\Checkout\Domain\Entity\Cart" table="cart">
+        <id name="id" type="cart_id" column="id" length="36"></id>
+        <field name="userId" type="user_id" column="userId" length="36"/>
+        <embedded name="createdAt" class="App\Api\Checkout\Domain\Entity\CartCreatedAt" use-column-prefix="false" />
+        <embedded name="updatedAt" class="App\Api\Checkout\Domain\Entity\CartUpdatedAt" use-column-prefix="false" />
+    </entity>
+</doctrine-mapping>

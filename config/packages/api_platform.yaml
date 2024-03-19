@@ -1,0 +1,13 @@
+api_platform:
+    mapping:
+        paths:
+            - '%kernel.project_dir%/config/api_platform/resources'
+    patch_formats:
+        json: ['application/merge-patch+json']
+    swagger:
+        versions: [3]
+    enable_re_doc: true
+    enable_swagger_ui: false
+    title: Drinksify API Docs
+    version: 1.0
+    show_webby: false

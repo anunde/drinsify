@@ -1,0 +1,35 @@
+App\Api\Subscription\Domain\Entity\Subscriber:
+  shortname: 'Subscribers'
+  description: 'Subscribers Endpoints'
+  itemOperations: []
+  collectionOperations:
+    subscribe_user:
+      method: 'POST'
+      description: 'Creates new Subscriber'
+      path: '/subscribe/user'
+      controller: 'App\Api\Subscription\Infrastructure\Controller\SubscribeUserController'
+      deserialize: false
+      openapi_context:
+        summary: 'Creates new Subscriber'
+        description: 'Save new subscriber in db if not already exists'
+        requestBody:
+          description: 'User email for subscribing'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  email:
+                    type: 'string'
+        responses:
+          '200':
+            description: 'Subscriber'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'

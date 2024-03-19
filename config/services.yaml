@@ -1,0 +1,78 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $mailerDefaultSender: '%env(string:MAILER_DEFAULT_SENDER)%'
+            $host:                '%env(string:HOST)%'
+            $key_api_blockchain:  '%env(string:KEY_API_BLOCKCHAIN)%'
+            $url_api_blockchain:  '%env(string:URL_API_BLOCKCHAIN)%'
+            $project_email:  '%env(string:PROJECT_EMAIL)%'
+            $project_address:  '%env(string:PROJECT_ADDRESS)%'
+            $mercadopago_access_token:  '%env(string:MERCADOPAGO_ACCESS_TOKEN)%'
+
+    app.test.jwt_encoder:
+        class: App\Api\Auth\Infrastructure\Service\JWTEncoder
+        arguments:
+            - '@lexik_jwt_authentication.encoder.default'
+        public: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Api\Shared\Infrastructure\Service\S3Uploader:
+        arguments:
+            $awsKey: '%env(AWS_ACCESS_KEY_ID)%'
+            $awsSecret: '%env(AWS_SECRET_ACCESS_KEY)%'
+            $awsRegion: '%env(AWS_REGION)%'
+            $bucket: '%env(AWS_S3_BUCKET)%'
+
+    App\Api\Auth\Infrastructure\Listener\UserRegisteredListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Auth\Domain\Event\UserRegisteredEvent, method: onUserRegistered }
+
+    App\Api\Auth\Infrastructure\Listener\UserRequestResetPasswordListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Auth\Domain\Event\UserRequestResetPasswordEvent, method: onUserRequestPassword }
+
+    App\Api\Contact\Infrastructure\Listener\UserSendMessageListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Contact\Domain\Event\UserSendMessageEvent, method: onUserSendMessage }
+
+    App\Api\Checkout\Infrastructure\Listener\EmptyCartListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Checkout\Domain\Event\OrderPaidEvent, method: onOrderPaid }
+
+    App\Api\Checkout\Infrastructure\Listener\SendUserPurchaseEmailListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Checkout\Domain\Event\OrderPaidEvent, method: onOrderPaid }
+
+    App\Api\Tokenization\Infrastructure\Listener\CreateTokenListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Checkout\Domain\Event\OrderPaidEvent, method: onOrderPaid }
+
+    App\Api\Tokenization\Infrastructure\Listener\MintTokenListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Api\Tokenization\Domain\Event\TokenCreatedEvent, method: onTokenCreated }
+
+    App\Api\Auth\Domain\Repository\UserRepositoryInterface: '@App\Api\Auth\Infrastructure\Persistence\Repository\UserRepository'
+    App\Api\Auth\Domain\DataSource\UserApiDataSource: '@App\Api\Auth\Infrastructure\Persistence\DataSource\UserApiDataSource'
+    App\Api\Auth\Domain\Service\PasswordEncoder: '@App\Api\Auth\Infrastructure\Service\PasswordEncoder'
+    App\Api\Shared\Domain\Mailing\MailerDomain: '@App\Api\Shared\Infrastructure\Mailing\Mailer'
+    App\Api\Shared\Domain\Repository\ProductRepositoryInterface: '@App\Api\Shared\Infrastructure\Persistence\Repository\ProductRepository'
+    App\Api\Catalogue\Domain\Repository\LikeRepositoryInterface: '@App\Api\Catalogue\Infrastructure\Persistence\Repository\LikeRepository'
+
+when@test:
+    services:
+        App\Api\Auth\Domain\Repository\UserRepositoryInterface: '@App\Api\Auth\Infrastructure\Persistence\Repository\UserRepositoryTest'
+        App\Api\Auth\Domain\DataSource\UserApiDataSource: '@App\Api\Auth\Infrastructure\Persistence\DataSource\UserApiDataSourceTest'
+        App\Api\Auth\Domain\Service\PasswordEncoder: '@App\Api\Auth\Infrastructure\Service\PasswordEncoderTest'
+        App\Api\Shared\Domain\Mailing\MailerDomain: '@App\Api\Shared\Infrastructure\Mailing\MailerTest'
+        App\Api\Shared\Domain\Repository\ProductRepositoryInterface: '@App\Api\Shared\Infrastructure\Persistence\Repository\ProductRepositoryTest'
+        App\Api\Catalogue\Domain\Repository\LikeRepositoryInterface: '@App\Api\Catalogue\Infrastructure\Persistence\Repository\LikeRepositoryTest'

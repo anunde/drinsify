@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Api\Checkout\Domain\Entity\Order" table="orders">
+        <id name="id" type="order_id" column="id" length="36"></id>
+        <field name="userId" type="user_id" column="userId" length="36"/>
+        <embedded name="status" class="App\Api\Checkout\Domain\Entity\OrderStatus" use-column-prefix="false" />
+        <embedded name="paid" class="App\Api\Checkout\Domain\Entity\OrderPaid" use-column-prefix="false" />
+        <embedded name="tokenized" class="App\Api\Checkout\Domain\Entity\OrderTokenized" use-column-prefix="false" />
+        <embedded name="method" class="App\Api\Checkout\Domain\Entity\OrderMethod" use-column-prefix="false" />
+        <embedded name="externalReference" class="App\Api\Checkout\Domain\Entity\OrderExternalReference" use-column-prefix="false" />
+        <embedded name="internalReference" class="App\Api\Checkout\Domain\Entity\OrderInternalReference" use-column-prefix="false" />
+        <embedded name="finishedAt" class="App\Api\Checkout\Domain\Entity\OrderFinishedAt" use-column-prefix="false" />
+        <embedded name="createdAt" class="App\Api\Checkout\Domain\Entity\OrderCreatedAt" use-column-prefix="false" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Api\Checkout\Domain\Entity\OrderLine" table="order_lines">
+        <id name="id" type="order_line_id" column="id" length="36"></id>
+        <field name="orderId" type="order_id" column="orderId" length="36"/>
+        <field name="productId" type="product_id" column="productId" length="36"/>
+        <embedded name="price" class="App\Api\Checkout\Domain\Entity\OrderLinePrice" use-column-prefix="false" />
+        <embedded name="taxes" class="App\Api\Checkout\Domain\Entity\OrderLineTaxes" use-column-prefix="false" />
+        <embedded name="quantity" class="App\Api\Checkout\Domain\Entity\OrderLineQuantity" use-column-prefix="false" />
+    </entity>
+</doctrine-mapping>

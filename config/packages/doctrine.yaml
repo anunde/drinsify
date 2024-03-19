@@ -1,0 +1,67 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        types:
+            user_id: App\Api\Auth\Infrastructure\Persistence\Doctrine\UserIdType
+            product_id: App\Api\Shared\Infrastructure\Persistence\Doctrine\ProductIdType
+            cellar_id: App\Api\Shared\Infrastructure\Persistence\Doctrine\CellarIdType
+            origin_id: App\Api\Catalogue\Infrastructure\Persistence\Doctrine\OriginIdType
+            brand_id: App\Api\Catalogue\Infrastructure\Persistence\Doctrine\BrandIdType
+            denomination_id: App\Api\Catalogue\Infrastructure\Persistence\Doctrine\DenominationIdType
+            product_info_id: App\Api\Catalogue\Infrastructure\Persistence\Doctrine\ProductInfoIdType
+            like_id: App\Api\Catalogue\Infrastructure\Persistence\Doctrine\LikeIdType
+            cart_id: App\Api\Checkout\Infrastructure\Persistence\Doctrine\CartIdType
+            cart_line_id: App\Api\Checkout\Infrastructure\Persistence\Doctrine\CartLineIdType
+            order_id: App\Api\Checkout\Infrastructure\Persistence\Doctrine\OrderIdType
+            order_line_id: App\Api\Checkout\Infrastructure\Persistence\Doctrine\OrderLineIdType
+            subscriber_id: App\Api\Subscription\Infrastructure\Persistence\Doctrine\SubscriberIdType
+            token_id: App\Api\Shared\Infrastructure\Persistence\Doctrine\TokenIdType
+
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            ApiUsers:
+                dir: '%kernel.project_dir%/src/Api/Auth/Domain/Entity/User'
+                prefix: 'App\Api\Auth\Domain\Entity\User'
+            ApiCatalogue:
+                dir: '%kernel.project_dir%/src/Api/Catalogue/Domain/Entity'
+                prefix: 'App\Api\Catalogue\Domain\Entity'
+            ApiCheckout:
+                type: xml
+                dir: '%kernel.project_dir%/src/Api/Checkout/Infrastructure/Persistence/Doctrine'
+                prefix: 'App\Api\Checkout\Domain\Entity'
+            ApiSubscription:
+                type: xml
+                dir: '%kernel.project_dir%/src/Api/Subscription/Infrastructure/Persistence/Doctrine'
+                prefix: 'App\Api\Subscription\Domain\Entity'
+            ApiShared:
+                dir: '%kernel.project_dir%/src/Api/Shared/Domain/Entity'
+                prefix: 'App\Api\Shared\Domain\Entity'
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

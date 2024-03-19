@@ -1,0 +1,174 @@
+App\Api\Checkout\Domain\Entity\Cart:
+  shortname: 'Cart'
+  description: 'Cart Endpoints'
+  itemOperations: []
+  collectionOperations:
+    add_product_to_cart:
+      method: 'POST'
+      description: 'Add product to cart'
+      path: '/cart/add'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\AddProductToCartController'
+      deserialize: false
+      openapi_context:
+        summary: 'Add product to cart'
+        description: 'Add product to cart or add quantity if already exists.'
+        requestBody:
+          description: 'Product Id that want to add and cart Id if already exists'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  productId:
+                    type: 'string'
+                    format: 'uuid'
+        responses:
+          '200':
+            description: 'Notice change'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '404':
+            description: 'Product not found'
+    subtract_product_to_cart:
+      method: 'POST'
+      description: 'Subtract product to cart'
+      path: '/cart/subtract'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\SubtractProductFromCartController'
+      deserialize: false
+      openapi_context:
+        summary: 'Subtract product from cart'
+        description: 'Subtract product from cart or remove product if does not exist enough existences.'
+        requestBody:
+          description: 'Product Id that want to subtract and cart Id'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  productId:
+                    type: 'string'
+                    format: 'uuid'
+        responses:
+          '200':
+            description: 'Notice change'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '404':
+            description: 'Product not found'
+    empty_cart:
+      method: 'DELETE'
+      description: 'Empty a user cart'
+      path: '/cart/empty'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\UserEmptyCartController'
+      deserialize: false
+      openapi_context:
+        summary: 'Empty a user cart'
+        description: 'Get user Id to find a cart and clear it.'
+        responses:
+          '200':
+            description: 'Cart cleared'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '404':
+            description: 'Not cart exists for that user'
+    list_cart:
+      method: 'GET'
+      description: 'List user cart'
+      path: '/cart/list'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\ListUserCartController'
+      deserialize: false
+      openapi_context:
+        summary: 'List user cart'
+        description: 'Get user Id to find a cart and list it.'
+        responses:
+          '200':
+            description: 'Cart listed'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'
+                      items:
+                        type: 'object'
+                        properties:
+                          name:
+                            type: 'string'
+                          image:
+                            type: 'string'
+                            format: 'url'
+                          price:
+                            type: 'float'
+                          quantity:
+                            type: 'integer'
+          '404':
+            description: 'Not cart exists for that user'
+    prepare_metamask:
+      method: 'GET'
+      description: 'Get total amount user cart and share metamask project address'
+      path: '/checkout/metamask'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\MetamaskPrepareInfoController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get total amount user cart and share metamask project address'
+        description: 'Get user Id to find a cart, deduce the total import with taxes of the cart, and share metamas address of the platform'
+        responses:
+          '200':
+            description: 'Info needed to continue the purchase'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    items:
+                      type: 'object'
+                      properties:
+                        amount:
+                          type: 'float'
+                        address:
+                          type: 'string'
+          '404':
+            description: 'Not cart exists for that user'
+    prepare_mercadopago:
+      method: 'GET'
+      description: 'Get cart products and generates mercadopago preferenceId'
+      path: '/checkout/mercadopago'
+      controller: 'App\Api\Checkout\Infrastructure\Controller\MercadopagoPrepareInfoController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get user cart and creates preferendeId'
+        description: 'Get user Id to find a cart, creates Mercadopago items, returns preferenceId'
+        responses:
+          '200':
+            description: 'Notice change'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    preferenceId:
+                      type: 'string'
+          '404':
+            description: 'Not cart exists for that user'

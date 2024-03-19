@@ -1,0 +1,24 @@
+App\Api\Shared\Domain\Entity\Cellar:
+  shortname: 'Cellars'
+  description: 'Cellars Endpoints'
+  itemOperations: []
+  collectionOperations:
+    list_cellars:
+      method: 'GET'
+      description: 'Get Cellars List'
+      path: '/cellar/list'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ListCellarController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get Cellar List'
+        description: 'Get info of cellars registered'
+        responses:
+          '200':
+            description: 'Cellars list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'

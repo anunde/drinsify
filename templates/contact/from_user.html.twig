@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <tr>
+        <td style="text-align:center;">
+            <p>El usuario con email {{ email }} dice:</p>
+            <p>{{ message|raw }}</p>
+        </td>
+    </tr>
+{% endblock %}

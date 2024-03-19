@@ -1,0 +1,29 @@
+api_v1_auth:
+  resource: ../src/Api/Auth/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1
+
+api_v1_catalogue:
+  resource: ../src/Api/Catalogue/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1
+
+api_v1_checkout:
+  resource: ../src/Api/Checkout/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1
+
+api_v1_tokenization:
+  resource: ../src/Api/Tokenization/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1
+
+api_v1_profile:
+  resource: ../src/Api/Profile/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1
+
+api_v1_panel:
+  resource: ../src/Api/Panel/Infrastructure/Controller/
+  type: annotation
+  prefix: /api/v1

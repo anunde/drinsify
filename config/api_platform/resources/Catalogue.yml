@@ -1,0 +1,273 @@
+App\Api\Shared\Domain\Entity\Product:
+  shortname: 'Catalogue'
+  description: 'Catalogue Endpoints'
+  itemOperations:
+    get:
+      method: 'GET'
+      description: 'Get product by ID'
+      path: '/product/detail/{id}'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\DetailProductController'
+      read: false
+      openapi_context:
+        summary: 'Get product by ID'
+        description: 'Get a single product by its unique identifier'
+        parameters:
+          - in: 'path'
+            name: 'id'
+            schema:
+              type: 'string'
+              format: 'uuid'
+            required: true
+            description: 'The unique identifier of the product.'
+        responses:
+          '200':
+            description: 'Product data'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    id:
+                      type: 'string'
+                      format: 'uuid'
+                    cellarId:
+                      type: 'string'
+                      format: 'uuid'
+                    originId:
+                      type: 'string'
+                      format: 'uuid'
+                    denominationId:
+                      type: 'string'
+                      format: 'uuid'
+                    brandId:
+                      type: 'string'
+                      format: 'uuid'
+                    name:
+                      type: 'string'
+                    description:
+                      type: 'string'
+                    image:
+                      type: 'string'
+                      format: 'url'
+                    type:
+                      type: 'string'
+                    quantity:
+                      type: 'integer'
+                    extension:
+                      type: 'string'
+                    status:
+                      type: 'bool'
+                    price:
+                      type: 'float'
+                    countriesAvailable:
+                      type: 'string'
+                    variety:
+                      type: 'string'
+                    vintage:
+                      type: 'string'
+                    ageing:
+                      type: 'integer'
+                    barrel:
+                      type: 'string'
+                    terroir:
+                      type: 'string'
+                    dataSheet:
+                      type: 'string'
+                      format: 'url'
+                    awards:
+                      type: 'string'
+                      format: 'url'
+                    qr:
+                      type: 'string'
+                      format: 'url'
+                    existenceProof:
+                      type: 'string'
+                      format: 'url'
+                    daysDelivery:
+                      type: 'integer'
+                    minRequestDate:
+                      type: 'datetime'
+          '404':
+            description: 'Product not found'
+  collectionOperations:
+    get_products_filtered:
+      method: 'GET'
+      description: 'Products filtered'
+      path: '/marketplace'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\SearchProductsController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get products filtered'
+        description: 'Get products filtered with Criteria pattern'
+        parameters:
+          - name: 'cellarId'
+            in: 'query'
+            schema:
+              type: 'string'
+              format: 'uuid'
+          - name: 'originId'
+            in: 'query'
+            schema:
+              type: 'string'
+              format: 'uuid'
+          - name: 'brandId'
+            in: 'query'
+            schema:
+              type: 'string'
+              format: 'uuid'
+          - name: 'denominationId'
+            in: 'query'
+            schema:
+              type: 'string'
+              format: 'uuid'
+          - name: 'minPrice'
+            in: 'query'
+            schema:
+              type: 'float'
+          - name: 'maxPrice'
+            in: 'query'
+            schema:
+              type: 'float'
+          - name: 'limit'
+            in: 'query'
+            schema:
+              type: 'integer'
+        responses:
+          '201':
+            description: 'Products list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'
+                      items:
+                        type: 'object'
+                        properties:
+                          id:
+                            type: 'string'
+                            format: 'uuid'
+                          cellarId:
+                            type: 'string'
+                            format: 'uuid'
+                          originId:
+                            type: 'string'
+                            format: 'uuid'
+                          denominationId:
+                            type: 'string'
+                            format: 'uuid'
+                          brandId:
+                            type: 'string'
+                            format: 'uuid'
+                          name:
+                            type: 'string'
+                          description:
+                            type: 'string'
+                          image:
+                            type: 'string'
+                            format: 'url'
+                          type:
+                            type: 'string'
+                          quantity:
+                            type: 'integer'
+                          extension:
+                            type: 'string'
+                          status:
+                            type: 'bool'
+                          price:
+                            type: 'float'
+                          countriesAvailable:
+                            type: 'string'
+          '400':
+            description: 'Bad Request'
+    toggle_like:
+      method: 'POST'
+      description: 'Switch Product like'
+      path: '/product/like/toggle'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ToggleLikeProductController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get product by ID and modify User likes list'
+        description: 'Get product by ID and modify User likes list'
+        requestBody:
+          description: 'Product ID'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  productId:
+                    type: 'string'
+                    format: 'uuid'
+        responses:
+          '200':
+            description: 'User likes list modified with product'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '404':
+            description: 'Product not found'
+    list_user_likes:
+      method: 'GET'
+      description: 'Get User Likes'
+      path: '/product/user/like'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ListUserLikesController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get User Likes'
+        description: 'Get products which the user logged likes'
+        responses:
+          '200':
+            description: 'User likes list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'
+    request_buy_series:
+      method: 'POST'
+      description: 'Send Request for buying all series'
+      path: '/request/buy/series'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\RequestBuyAllSeriesController'
+      deserialize: false
+      openapi_context:
+        summary: 'Send Request for buying all series from product'
+        description: 'Send email to Drinksify admins which informs about a user requesting all series from product'
+        requestBody:
+          description: 'Params required to create the email'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  userEmail:
+                    type: 'string'
+                    format: 'email'
+                  productId:
+                    type: 'string'
+                    format: 'uuid'
+                  productName:
+                    type: 'string'
+        responses:
+          '200':
+            description: 'Email sent'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    status:
+                      type: 'string'
+                    message:
+                      type: 'string'
+          '404':
+            description: 'Bad request'

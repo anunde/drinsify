@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Api\Checkout\Domain\Entity\CartLine" table="cart_lines">
+        <id name="id" type="cart_line_id" column="id" length="36"></id>
+        <field name="cartId" type="cart_id" column="cartId" length="36"/>
+        <field name="productId" type="product_id" column="productId" length="36"/>
+        <embedded name="quantity" class="App\Api\Checkout\Domain\Entity\CartLineQuantity" use-column-prefix="false" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,7 @@
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
+
+users:
+    resource: ../../src/Api/Auth/Infrastructure/Controller/
+    type: annotation

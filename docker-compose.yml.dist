@@ -1,0 +1,47 @@
+version: '3.5'
+
+services:
+    drinksify-web:
+        container_name: drinksify-web
+        build:
+            context: ./docker/nginx
+            args:
+                UID: $U_ID
+        ports:
+            - 3000:80
+        volumes:
+            - ./public:/appdata/www/public
+        networks:
+            - drinksify-network
+        depends_on:
+            - drinksify-be
+
+    drinksify-be:
+        container_name: drinksify-be
+        build:
+            context: ./docker/php
+            args:
+                UID: $U_ID
+        environment:
+            XDEBUG_CLIENT_HOST: host.docker.internal
+            XDEBUG_CLIENT_PORT: 9003
+            PHP_IDE_CONFIG: serverName=Docker
+        volumes:
+            - ./:/appdata/www
+            - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa
+        networks:
+            - drinksify-network
+
+    drinksify-mailcatcher:
+        container_name: drinksify-mailcatcher
+        image: schickling/mailcatcher
+        ports:
+            - 1080:1080
+            - 1025:1025
+        networks:
+            - drinksify-network
+
+networks:
+    drinksify-network:
+        external: true

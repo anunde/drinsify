@@ -1,0 +1,24 @@
+App\Api\Catalogue\Domain\Entity\Origin:
+  shortname: 'Origin'
+  description: 'Origin Endpoints'
+  itemOperations: []
+  collectionOperations:
+    list_origins:
+      method: 'GET'
+      description: 'Get Origin List'
+      path: '/origin/list'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ListOriginController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get Origin List'
+        description: 'Get info of origins registered'
+        responses:
+          '200':
+            description: 'Origin list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'

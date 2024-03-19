@@ -1,0 +1,24 @@
+App\Api\Catalogue\Domain\Entity\Brand:
+  shortname: 'Brand'
+  description: 'Brand Endpoints'
+  itemOperations: []
+  collectionOperations:
+    list_origins:
+      method: 'GET'
+      description: 'Get Brand List'
+      path: '/brand/list'
+      controller: 'App\Api\Catalogue\Infrastructure\Controller\ListBrandController'
+      deserialize: false
+      openapi_context:
+        summary: 'Get Brand List'
+        description: 'Get info of brands registered'
+        responses:
+          '200':
+            description: 'Brand list'
+            content:
+              application/json:
+                schema:
+                  type: 'object'
+                  properties:
+                    result:
+                      type: 'array'

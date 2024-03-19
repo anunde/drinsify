@@ -1,0 +1,68 @@
+security:
+    providers:
+        app_user_provider:
+            id: App\Api\Auth\Infrastructure\Security\UserProvider
+    firewalls:
+        anonymous:
+            pattern: ^/api/v1/users/login|^/api/v1/marketplace|^/api/v1/users/register|^/api/v1/product/detail|^/api/v1/users/activate|^/api/v1/users/restore/token|^/api/v1/users/request/reset/password|^/api/v1/users/reset/password|^/api/v1/docs|^/api/v1/cellar/list|^/api/v1/subscribe/user|^/api/v1/contact|^/api/v1/origin/list|^/api/v1/brand/list|^/api/v1/denomination/list|^/api/v1/request/buy/series|^/api/v1/webhook/mercadopago|^/api/v1/webhook/mint/token/|^/api/v1/marketplace/tokens|^/api/v1/token/detail
+            stateless: true
+            anonymous: true
+              # Rutas permitidas:
+              # - /api/v1/users/login
+              # - /api/v1/marketplace
+              # - /api/v1/users/register
+              # - /api/v1/product/detail
+              # - /api/v1/users/activate
+              # - /api/v1/users/restore/token
+              # - /api/v1/users/request/reset/password
+              # - /api/v1/users/reset/password
+              # - /api/v1/docs
+              # - /api/v1/cellar/list
+              # - /api/v1/subscribe/user
+              # - /api/v1/contact
+              # - /api/v1/origin/list
+              # - /api/v1/denomination/list
+              # - /api/v1/brand/list
+              # - /api/v1/request/buy/series
+              # - /api/v1/webhook/mercadopago
+              # - /api/v1/webhook/mint/token/
+              # - /api/v1/marketplace/tokens
+              # - /api/v1/token/detail
+        api:
+            pattern: ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/api/v1/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/marketplace, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/product/detail, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/restore/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/request/reset/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/users/reset/password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/cellar/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/subscribe/user, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/contact, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/origin/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/denomination/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/brand/list, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/request/buy/series, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/webhook/mercadopago, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/webhook/mint/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/marketplace/tokens, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/token/detail, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
